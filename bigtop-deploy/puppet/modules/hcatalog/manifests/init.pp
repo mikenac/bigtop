@@ -26,18 +26,18 @@ class hcatalog {
   }
 
   class server($port = "9083", $kerberos_realm = "") {
-    package { "hcatalog-server":
+    package { "hive-hcatalog-server":
       ensure => latest,
     }
 
-    file { "/etc/default/hcatalog-server":
+    file { "/etc/default/hive-hcatalog-server":
       content => template("hcatalog/hcatalog-server"),
-      require => Package["hcatalog-server"],
+      require => Package["hive-hcatalog-server"],
     }
 
-    service { "hcatalog-server":
+    service { "hive-hcatalog-server":
       ensure => running,
-      require => [ Package["hcatalog-server"], File["/etc/default/hcatalog-server"] ],
+      require => [ Package["hive-hcatalog-server"], File["/etc/default/hive-hcatalog-server"] ],
       hasrestart => true,
       hasstatus => true,
     } 
@@ -45,18 +45,18 @@ class hcatalog {
 
   class webhcat {
     class server($port = "50111", $kerberos_realm = "") {
-      package { "webhcat-server":
+      package { "hive-webhcat-server":
         ensure => latest,
       }
   
-      file { "/etc/webhcat/conf/webhcat.xml":
+      file { "/etc/hive-webhcat/conf/webhcat.xml":
         content => template("hcatalog/webhcat.xml"),
-        require => Package["webhcat-server"],
+        require => Package["hive-webhcat-server"],
       }
   
-      service { "webhcat-server":
+      service { "hive-webhcat-server":
         ensure => running,
-        require => [ Package["webhcat-server"], File["/etc/webhcat/conf/webhcat.xml"] ],
+        require => [ Package["hive-webhcat-server"], File["/etc/hive-webhcat/conf/webhcat.xml"] ],
         hasrestart => true,
         hasstatus => true,
       } 
